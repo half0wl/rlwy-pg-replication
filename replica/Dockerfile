@@ -13,11 +13,8 @@ RUN echo \
     /usr/bin/openssl, /usr/bin/repmgr, /usr/bin/psql" \
     > /etc/sudoers.d/postgres
 
-COPY --chmod=755 _include.sh /usr/local/bin/_include.sh
-COPY --chmod=755 _common.sh /usr/local/bin/_common.sh
-COPY --chmod=755 configure-replica.sh /usr/local/bin/configure-replica.sh
-COPY --chmod=755 ssl.sh /usr/local/bin/ssl.sh
-COPY --chmod=755 run.sh /usr/local/bin/run.sh
+COPY --chmod=755 ensure-ssl.sh /usr/local/bin/ssl.sh
+COPY --chmod=755 start.sh /usr/local/bin/start.sh
 
-ENTRYPOINT ["run.sh"]
+ENTRYPOINT ["start.sh"]
 CMD ["postgres", "-p", "5432", "-c", "listen_addresses=*"]

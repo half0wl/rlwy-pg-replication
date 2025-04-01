@@ -1,11 +1,18 @@
 #!/bin/bash
-# ########################################################################### #
-# https://railway.com
-# ########################################################################### #
-set -e
-
+# --------------------------------------------------------------------------- #
+# Configure SSL certificate for a Postgres instance on Railway.
+#
+# This script generates a self-signed root CA certificate and a server
+# certificate signed by the root CA. The server certificate is then used
+# to configure Postgres to use SSL.
+#
+# If the server certificate is about to expire or has expired, it will be
+# automatically renewed.
+#
+# This script is meant to be sourced from `start.sh`.
+# --------------------------------------------------------------------------- #
 SSL_V3_EXT_FILE="$SSL_CERTS_DIR/v3.ext"
-SSL_ROOT_CN="pg-ca-root.railway.com"
+SSL_ROOT_CN="pg-root-ca.railway.com"
 SSL_ROOT_SUBJ="/C=US/O=Railway Corporation/CN=${SSL_ROOT_CN}"
 SSL_ROOT_CA_EXPIRY_DAYS=${SSL_ROOT_CA_EXPIRY_DAYS:-3650}
 SSL_ROOT_CSR="$SSL_CERTS_DIR/root.csr"
