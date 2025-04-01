@@ -1,4 +1,4 @@
-name: Publish images for all versions
+name: Publish Replica Images
 
 on:
   workflow_dispatch:
@@ -15,9 +15,9 @@ jobs:
       matrix:
         dockerfile:
           [
-            "./replica/Dockerfile.15",
-            "./replica/Dockerfile.16",
-            "./replica/Dockerfile.17",
+            "Dockerfile.15",
+            "Dockerfile.16",
+            "Dockerfile.17",
           ]
 
     steps:
