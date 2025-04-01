@@ -52,7 +52,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./replica
-          file: ${{ matrix.dockerfile }}
+          file: ./replica/${{ matrix.dockerfile }}
           platforms: linux/arm64, linux/amd64
           push: true
           tags: ghcr.io/${{ github.repository }}:${{ steps.extract_version.outputs.version }}
