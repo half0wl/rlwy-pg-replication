@@ -62,9 +62,11 @@ done
 # Set up required variables, directories, and files
 REPMGR_DIR="${RAILWAY_VOLUME_MOUNT_PATH}/repmgr"
 PG_DATA_DIR="${RAILWAY_VOLUME_MOUNT_PATH}/pgdata"
+SSL_CERTS_DIR="${RAILWAY_VOLUME_MOUNT_PATH}/certs"
 
 mkdir -p "$REPMGR_DIR"
 mkdir -p "$PG_DATA_DIR"
+mkdir -p "$SSL_CERTS_DIR"
 
 REPLICATION_MUTEX="${REPMGR_DIR}/mutex"
 REPMGR_CONF_FILE="${REPMGR_DIR}/repmgr.conf"
@@ -83,6 +85,7 @@ log_hl "REPMGR_CONF_FILE            = $REPMGR_CONF_FILE"
 log_hl "PG_DATA_DIR                 = $PG_DATA_DIR"
 log_hl "PG_CONF_FILE                = $PG_CONF_FILE"
 log_hl "PG_EXTRA_OPTS               = $PG_EXTRA_OPTS"
+log_hl "SSL_CERTS_DIR               = $SSL_CERTS_DIR"
 
 if [ ! -z "$DEBUG_MODE" ]; then
   log "Starting in debug mode! Postgres will not run."
