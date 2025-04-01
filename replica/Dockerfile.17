@@ -13,7 +13,7 @@ RUN echo \
     /usr/bin/openssl, /usr/bin/repmgr, /usr/bin/psql" \
     > /etc/sudoers.d/postgres
 
-COPY --chmod=755 ensure-ssl.sh /usr/local/bin/ssl.sh
+COPY --chmod=755 ensure-ssl.sh /usr/local/bin/ensure-ssl.sh
 COPY --chmod=755 start.sh /usr/local/bin/start.sh
 
 ENTRYPOINT ["start.sh"]
