@@ -32,8 +32,6 @@ su -m postgres -c \
    standby clone --force 2>&1" &
 repmgr_pid=$!
 
-# repmgr -h $PRIMARY_PGHOST -p $PRIMARY_PGPORT -f /var/lib/postgresql/data/railway-runtime/repmgr/repmgr.conf standby clone --force
-
 log "Performing clone of primary node. This may take awhile! ⏳"
 while kill -0 $repmgr_pid 2>/dev/null; do
     echo -n "."
@@ -47,6 +45,7 @@ if [ $repmgr_status -eq 0 ]; then
   log_ok "Successfully cloned primary node"
 
   log "Performing post-replication setup ⏳"
+  source ssl.sh
   su -m postgres -c "pg_ctl -D ${PG_DATA_DIR} start"
   if su -m postgres -c \
       "repmgr standby register --force -f $REPMGR_CONF_FILE 2>&1"
