@@ -32,8 +32,7 @@ su -m postgres -c \
    standby clone --force 2>&1" &
 repmgr_pid=$!
 
-
-repmgr -h $PRIMARY_PGHOST -p $PRIMARY_PGPORT -f /var/lib/postgresql/data/railway-runtime/repmgr/repmgr.conf standby clone --force
+# repmgr -h $PRIMARY_PGHOST -p $PRIMARY_PGPORT -f /var/lib/postgresql/data/railway-runtime/repmgr/repmgr.conf standby clone --force
 
 log "Performing clone of primary node. This may take awhile! ⏳"
 while kill -0 $repmgr_pid 2>/dev/null; do
