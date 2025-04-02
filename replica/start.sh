@@ -176,10 +176,4 @@ fi
 
 # Run Postgres via the image's entrypoint script
 source "$ENSURE_SSL_SCRIPT"
-chown --dereference postgres "/proc/$$/fd/1" "/proc/$$/fd/2"
-/usr/local/bin/docker-entrypoint.sh \
-    -c log_destination=jsonlog
-    -c logging_collector=on
-    -c log_directory=/proc/1/fd/
-    -c log_filename=1
-    "$@"
+/usr/local/bin/docker-entrypoint.sh "$@"
