@@ -117,8 +117,6 @@ else
   log_ok "SSL: Server certificate is valid."
 fi
 
-sudo chown -R postgres:postgres "$SSL_CERTS_DIR"
-
 if ! grep -q "ssl = on" "$PG_CONF_FILE"; then
   cat >> "$PG_CONF_FILE" <<EOF
 ssl = on

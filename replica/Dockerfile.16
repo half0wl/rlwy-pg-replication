@@ -18,3 +18,4 @@ COPY --chmod=755 ensure-ssl.sh /usr/local/bin/ensure-ssl.sh
 COPY --chmod=755 start.sh /usr/local/bin/start.sh
 
 ENTRYPOINT ["start.sh"]
+CMD ["postgres", "-p", "5432", "-c", "listen_addresses=*"]

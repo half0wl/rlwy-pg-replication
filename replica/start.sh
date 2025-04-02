@@ -62,10 +62,12 @@ done
 # Set up required variables, directories, and files
 REPMGR_DIR="${RAILWAY_VOLUME_MOUNT_PATH}/repmgr"
 PG_DATA_DIR="${RAILWAY_VOLUME_MOUNT_PATH}/pgdata"
+PG_LOGS_DIR="${RAILWAY_VOLUME_MOUNT_PATH}/pglogs"
 SSL_CERTS_DIR="${RAILWAY_VOLUME_MOUNT_PATH}/certs"
 
 mkdir -p "$REPMGR_DIR"
 mkdir -p "$PG_DATA_DIR"
+mkdir -p "$PG_LOGS_DIR"
 mkdir -p "$SSL_CERTS_DIR"
 
 REPLICATION_MUTEX="${REPMGR_DIR}/mutex"
@@ -73,6 +75,15 @@ REPMGR_CONF_FILE="${REPMGR_DIR}/repmgr.conf"
 PG_CONF_FILE="${PG_DATA_DIR}/postgresql.conf"
 PG_EXTRA_OPTS="${PG_EXTRA_OPTS}"
 ENSURE_SSL_SCRIPT="ensure-ssl.sh"
+
+# Set up permissions
+sudo chown -R postgres:postgres "$REPMGR_DIR"
+sudo chown -R postgres:postgres "$PG_DATA_DIR"
+sudo chown -R postgres:postgres "$PG_LOGS_DIR"
+sudo chown -R postgres:postgres "$SSL_CERTS_DIR"
+sudo chmod 700 "$PG_DATA_DIR"
+sudo chmod 700 "$PG_LOGS_DIR"
+sudo chmod 700 "$REPMGR_DIR"
 
 log_hl "RAILWAY_VOLUME_NAME         = $RAILWAY_VOLUME_NAME"
 log_hl "RAILWAY_VOLUME_MOUNT_PATH   = $RAILWAY_VOLUME_MOUNT_PATH"
@@ -83,6 +94,7 @@ log_hl "OUR_NODE_ID                 = $OUR_NODE_ID"
 log_hl "REPMGR_DIR                  = $REPMGR_DIR"
 log_hl "REPMGR_CONF_FILE            = $REPMGR_CONF_FILE"
 log_hl "PG_DATA_DIR                 = $PG_DATA_DIR"
+log_hl "PG_LOGS_DIR                 = $PG_LOGS_DIR"
 log_hl "PG_CONF_FILE                = $PG_CONF_FILE"
 log_hl "PG_EXTRA_OPTS               = $PG_EXTRA_OPTS"
 log_hl "SSL_CERTS_DIR               = $SSL_CERTS_DIR"
@@ -120,11 +132,6 @@ conninfo='host=${PGHOST} port=${PGPORT} user=repmgr dbname=repmgr connect_timeou
 data_directory='${PG_DATA_DIR}'
 EOF
     log "Created repmgr configuration at '$REPMGR_CONF_FILE'"
-
-    sudo chown -R postgres:postgres "$PG_DATA_DIR"
-    sudo chown -R postgres:postgres "$REPMGR_DIR"
-    sudo chmod 700 "$PG_DATA_DIR"
-    sudo chmod 700 "$REPMGR_DIR"
 
     # Start clone process in background so we can output progress
     export PGPASSWORD="$PRIMARY_REPMGR_PWD" # for connecting to primary
