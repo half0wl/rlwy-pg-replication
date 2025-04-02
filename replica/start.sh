@@ -73,6 +73,7 @@ mkdir -p "$SSL_CERTS_DIR"
 REPLICATION_MUTEX="${REPMGR_DIR}/mutex"
 REPMGR_CONF_FILE="${REPMGR_DIR}/repmgr.conf"
 PG_CONF_FILE="${PG_DATA_DIR}/postgresql.conf"
+PG_LOG_FILE="${PG_LOGS_DIR}/1.json"
 PG_EXTRA_OPTS="${PG_EXTRA_OPTS}"
 ENSURE_SSL_SCRIPT="ensure-ssl.sh"
 
@@ -94,9 +95,10 @@ log_hl "OUR_NODE_ID                 = $OUR_NODE_ID"
 log_hl "REPMGR_DIR                  = $REPMGR_DIR"
 log_hl "REPMGR_CONF_FILE            = $REPMGR_CONF_FILE"
 log_hl "PG_DATA_DIR                 = $PG_DATA_DIR"
-log_hl "PG_LOGS_DIR                 = $PG_LOGS_DIR"
 log_hl "PG_CONF_FILE                = $PG_CONF_FILE"
 log_hl "PG_EXTRA_OPTS               = $PG_EXTRA_OPTS"
+log_hl "PG_LOGS_DIR                 = $PG_LOGS_DIR"
+log_hl "PG_LOG_FILE                 = $PG_LOG_FILE"
 log_hl "SSL_CERTS_DIR               = $SSL_CERTS_DIR"
 
 if [ ! -z "$DEBUG_MODE" ]; then
@@ -183,4 +185,4 @@ fi
 
 # Run Postgres via the image's entrypoint script
 source "$ENSURE_SSL_SCRIPT"
-/usr/local/bin/docker-entrypoint.sh "$@"
+/usr/local/bin/docker-entrypoint.sh "$@"; echo "foobar"; tail -f "$PG_LOG_FILE" 2>&1
